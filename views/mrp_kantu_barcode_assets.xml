@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="assets_backend" name="mrp_kantu assets" inherit_id="web.assets_backend">
+        <xpath expr="." position="inside">
+            <link rel="stylesheet" type="text/less" href="/mrp_kantu_barcode/static/src/less/styles.less"></link>
+            <script type="text/javascript" src="/mrp_kantu_barcode/static/lib/fastclick.js"></script>
+            <script type="text/javascript" src="/mrp_kantu_barcode/static/lib/jquery.overscroll.min.js"></script>
+            <script type="text/javascript" src="/mrp_kantu_barcode/static/lib/quagga.js"></script>
+            <script type="text/javascript" src="/mrp_kantu_barcode/static/src/js/mrp_kantu_barcode.js"></script>
+            <script type="text/javascript" src="/mrp_kantu_barcode/static/src/js/mrp.js"></script>
+        </xpath>
+    </template>
+</odoo>

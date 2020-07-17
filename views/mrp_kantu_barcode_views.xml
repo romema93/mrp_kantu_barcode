@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Accion para la vista lector de codigo de barras -->
+        <record id="action_codigo_barras" model="ir.actions.client">
+            <field name="name">Codigo de Barras</field>
+            <field name="tag">mrp_kantu_barcode</field>
+            <field name="target">fullscreen</field>
+        </record>
+        <!-- Menu para el lector de codigo de barras -->
+        <menuitem id="menu_codigo_barras"
+                  name="Codigo de Barras"
+                  action="action_codigo_barras"
+                  parent="mrp.menu_mrp_root"
+                  groups="mrp_kantu.group_mrp_operario,mrp.group_mrp_user"
+        />
+    </data>
+</odoo>

@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<template xml:space="preserve">
+    <t t-name="MrpBarcode">
+        <div class="mrp-barcode">
+            <div class="navigation" style="padding:15px;">
+                <div>
+                    <a id="back" class="btn btn-link">
+                        <i class="fa fa-arrow-left fa-2x"></i>
+                    </a>
+                </div>
+                <div>
+                    <a href="#" class="btn btn-link">
+                        <i class="fa fa-home fa-2x"></i>
+                    </a>
+                </div>
+            </div>
+            <div id="modal-confirmation" class="modal fade" tabindex="-1" role="dialog">
+                <div class="modal-dialog modal-sm" role="document">
+                    <div class="modal-content" style="color: black">
+                        <div class="modal-header">
+                            <h2 class="modal-title">Confirmación</h2>
+                        </div>
+                        <div class="modal-body">
+                            <h2>¿Esta seguro de continuar con la operación?</h2>
+                        </div>
+                        <div class="modal-footer">
+                            <button id="ok" class="btn btn-primary btn-lg">Ok</button>
+                            <button id="cancel" class="btn btn-default btn-lg">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="container_views" style="height:100%; position:relative;">
+                <!--Cargar el contenido aqui-->
+            </div>
+        </div>
+    </t>
+
+    <t t-name="MainBarcode">
+        <div class="container-fluid">
+            <div class="row"
+                 style="display:flex;position:absolute;flex-direction:column;justify-content:center;width:100%;height:100%">
+                <div class="col-sm-12 col-md-6 col-lg-4 col-md-offset-3 col-lg-offset-4">
+                    <div class="thumbnail"
+                         style="background-color: #fff; box-shadow: 0 9px 30px 0 #0000001a; border-radius:2rem; padding:1.5rem;">
+                        <t t-if="webcamAvailable">
+                            <div id="btn-camera-scan">
+                                <i class="fa fa-camera fa-2x"></i>
+                            </div>
+                        </t>
+                        <img src="/mrp_kantu_barcode/static/img/barcode.png"/>
+                        <h2 class="text-center h1 font-bold" style="color:#000">Escanear el código de barras</h2>
+                        <div class="text-center mt24 mb24">
+                            <button id="select-op" class="btn btn-primary btn-lg"
+                                    style="line-height:2em; font-weight:bold;">
+                                <i class="fa fa-list-ul fa-2x"></i>
+                                <span class="hidden-xs">&#160;&#160;Seleccionar Manualmente</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+
+
+    <t t-name="BarcodeCamera">
+        <section class="container">
+            <!--<div class="row">-->
+            <!--<div class="col-sm-12 col-md-offser-4">
+                <div id="camera-scan" style="position: absolute; width:100%; top:0; left:0"></div>
+                <button id="change-camera" class="btn btn-info" style="position: absolute; top:15px; right:15px;">Cambiar camara</button>
+            </div>-->
+            <!--</div>-->
+            <div id="interactive" class="viewport"/>
+            <button id="change-camera" class="btn btn-info" style="position: absolute; top:15px; right:30px;">Cambiar camara</button>
+        </section>
+    </t>
+
+
+    <t t-name="SelectOp">
+        <div class="container-fluid content-grid">
+            <h1 class="font-bold">Seleccionar Orden de Produccion</h1>
+            <div class="row">
+                <div class="col-md-3" t-foreach="ops" t-as="op">
+                    <div t-attf-data-id="{{op.id}}" class="op card">
+                        <h2><t t-esc="op.name"/></h2>
+                        <span class="text-black-75"><t t-esc="op.product_id[1]"/></span>
+                        <div class="text-epsilon qty-uom">
+                            <p class="qty font-bold"><i class="fa fa-server"></i>&#160;&#160;<t t-esc="op.mrp_sec_qty"/></p>
+                            <p class="uom"><t t-esc="op.mrp_sec_uom[1]"/></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+
+    <t t-name="SelectWo">
+        <div class="container-fluid content-grid">
+            <h1 class="font-bold"><t t-esc="op.name" />
+                -
+                <t t-esc="op.product_id[1]"/></h1>
+            <div class="row">
+                <!--<div class="col-md-3" t-foreach="wos" t-as="wo">
+                    <div t-attf-data-id="{{wo.id}}" class="wo card">
+                        <h2><t t-esc="wo.name"/></h2>
+                    </div>
+                </div>-->
+                <div class="col-xs-12 col-sm-6 col-md-4" t-foreach="workcenters" t-as="wc">
+                    <div style="padding: 15px;
+    background-color: rgba(255,255,255,.2);
+    box-shadow: 0 4px 15px -4px black;border-radius: 2rem; margin-bottom:30px">
+                        <h3 style="font-weight: bold;font-size: 18px;" class="text-center"><t t-esc="wc.workcenter_id[1]"/></h3>
+                        <div class="row">
+                            <div class="col-xs-12" t-foreach="wc.workorder_ids" t-as="wo">
+                                <div t-attf-data-id="{{wo.id}}" class="wo card"
+                                     t-attf-style="background-color: {{wo.objectColor.background}}; color: {{wo.objectColor.color}}">
+                                    <h2><t t-esc="wo.name"/></h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+
+    <t t-name="OperationWo">
+        <div class="container-fluid">
+            <div class="row"
+                 style="display:flex;position:absolute;flex-direction:column;justify-content:center;width:100%;height:100%">
+                <div class="col-sm-12 col-md-4 col-md-offset-4">
+                    <div class="thumbnail"
+                         style="background-color: #fff; box-shadow: 0 9px 30px 0 #0000001a; border-radius:2rem; padding:1.5rem;">
+                        <img t-attf-src="{{wo.productImageUrl}}" style="max-height: 400px"/>
+                        <h2 class="text-center h1 font-bold" style="color:#000"><t t-esc="wo.name"/></h2>
+                        <h3 class="text-center h2 font-bold" style="color:#000"><t t-esc="wo.production_id[1]"/></h3>
+                        <h4 class="text-center h3 font-bold" style="color:#000"><t t-esc="wo.product_id[1]"/></h4>
+                        <div class="mt24 mb24">
+                            <div style="margin: 10px; display:flex;">
+                                <div style="flex-grow:1; padding:1rem"
+                                     t-if="!(wo.is_produced || wo.working_state=='blocked' || wo.state!='progress' || !wo.is_user_working)">
+                                    <button id="btn-done" class="btn btn-success btn-lg btn-block">
+                                        <i class="fa fa-check fa-2x"></i>
+                                        <br/>REALIZADO
+                                    </button>
+                                </div>
+                                <div style="flex-grow:1; padding:1rem"
+                                     t-if="!(wo.working_state=='blocked' || wo.is_user_working || ['done','pending','ready','cancel','supervisado'].includes(wo.state))">
+                                    <button id="btn-continue" class="btn btn-warning btn-lg btn-block">
+                                        <i class="fa fa-play fa-2x"></i>
+                                        <br/>CONTINUAR LA PRODUCCIÓN
+                                    </button>
+                                </div>
+                                <div style="flex-grow:1; padding:1rem"
+                                     t-if="!(wo.working_state=='blocked' || ['done','pending','ready','cancel'].includes(wo.state) || !wo.is_user_working)">
+                                    <button id="btn-stop" class="btn btn-warning btn-lg btn-block">
+                                        <i class="fa fa-stop fa-2x"></i>
+                                        <br/>DETENER
+                                    </button>
+                                </div>
+                                <div style="flex-grow:1; padding:1rem"
+                                     t-if="!(wo.working_state=='blocked' || wo.state != 'ready')">
+                                    <button id="btn-start" class="btn btn-primary btn-lg btn-block">
+                                        <i class="fa fa-play fa-2x"></i>
+                                        <br/>EMPEZAR A TRABAJAR
+                                    </button>
+                                </div>
+                                <div style="flex-grow:1;padding:1rem"
+                                     t-if="!(wo.working_state=='blocked' || wo.state != 'pending')">
+                                    <button id="btn-start-p" class="btn btn-success btn-lg btn-block">
+                                        <i class="fa fa-play fa-2x"></i>
+                                        <br/>EMPEZAR A TRABAJAR
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+</template>
